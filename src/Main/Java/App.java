@@ -2,6 +2,8 @@ package Main.Java;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import Frontend.ATMVirtual.LoginPage.LoginPage;
 import Main.Java.DataBase.DataBaseconnector;
 
 public class App {
@@ -14,5 +16,6 @@ public class App {
         } catch (SQLException e) {
             System.out.println("Error al conectar a la base de datos: " + e.getMessage());
         }
+        LoginPage.main(args);
     }
 }
