@@ -5,6 +5,7 @@ import javax.swing.*;
 import Frontend.ATMVirtual.MainPage.MainPage;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 public class TransaccionesPage extends JFrame {
@@ -103,7 +104,13 @@ public class TransaccionesPage extends JFrame {
         button2.setFont(new Font("Tahoma", Font.PLAIN, 20));
         button2.setBackground(new Color(225, 18, 18));
         button2.setBounds(20, 250, 200, 40);
-        button2.addActionListener(e -> regresarCuenta());
+        button2.addActionListener(e -> {
+            try {
+                regresarCuenta();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
         panel.add(button2);
 
         // Mostrar la ventana
@@ -111,7 +118,7 @@ public class TransaccionesPage extends JFrame {
     }
 
 
-    private void regresarCuenta() {
+    private void regresarCuenta() throws SQLException {
         MainPage cuenta = new MainPage();
         cuenta.setVisible(true);
         setVisible(false);

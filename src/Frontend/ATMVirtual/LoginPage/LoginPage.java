@@ -1,11 +1,13 @@
 package Frontend.ATMVirtual.LoginPage;
 import javax.swing.*;
 
+import Backend.Class.Security.Security;
 import Frontend.ATMVirtual.MainPage.MainPage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 public class LoginPage extends JFrame {
@@ -95,7 +97,13 @@ public class LoginPage extends JFrame {
         button1.setFont(new Font("Arial", Font.BOLD, 14));
         button1.setForeground(Color.BLACK);
         button1.setBounds(400, 390, 100, 40);
-        button1.addActionListener((ActionEvent e) -> loginBtnClicked(textField.getText(), passwordField1.getPassword()));
+        button1.addActionListener((ActionEvent e) -> {
+            try {
+                loginBtnClicked(textField.getText(), passwordField1.getPassword());
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
         add(button1);
 
         // Botón Limpiar
@@ -117,21 +125,6 @@ public class LoginPage extends JFrame {
         setVisible(true); // Hace visible la ventana
     }
 
-    private void loginBtnClicked(String user, char[] password)
-    {
-        if(user.isEmpty() || password.length == 0) {
-            error.setVisible(true);
-            return;
-        }
-        System.out.format("Name: %s, Occupation: %s%n", user, String.valueOf(password));
-
-        //Llamar/consultar base de datos para validar el usuario ingresado y luego obtener el nombre del usuario
-        prefs.put("user", user);
-        frame.setVisible(false);
-        final MainPage cuenta = new MainPage();
-        cuenta.setVisible(true);
-    }
-
     private void cleanBtnClicked()
     {
         error.setVisible(false);
@@ -143,6 +136,26 @@ public class LoginPage extends JFrame {
         frame = new LoginPage();
     }
 
+    private void loginBtnClicked(String user, char[] password) throws SQLException {
+        if (user.isEmpty() || password.length == 0) {
+            error.setText("Por favor ingrese todos los campos.");
+            error.setVisible(true);
+            return;
+        }
+    
+        Security security = new Security(); // Crear una instancia de Security
+        // Validar las credenciales del usuario
+        if (security.validateUser(user, password)) {
+            prefs.put("user", user);
+            frame.setVisible(false);
+            final MainPage cuenta = new MainPage();
+            cuenta.setVisible(true);
+        } else {
+            error.setText("Usuario o contraseña incorrecto.");
+            error.setVisible(true);
+        }
+    }
+    
     
 }
 
