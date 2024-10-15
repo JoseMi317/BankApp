@@ -21,13 +21,14 @@ public class MainPage extends JFrame {
     JLabel label1, label2, label3;
     JButton button1, button2, button3;
     private final Preferences prefs;
+    private JLabel noCuentaValue; // Hacerlo variable de instancia
 
     public MainPage() throws SQLException {
         connection = DataBaseconnector.getConnection(); // Inicializa la conexión
         Login cuenta = new Login(connection); // Pasa la conexión a Login
         prefs = Preferences.userRoot().node("ATM");
         setTitle("Cuenta Bancaria de " + prefs.get("user", ""));
-        
+
         // Configuraciones de la ventana
         setSize(850, 550); // Tamaño de la ventana
         setLocation(450, 150); // Ubicación de la ventana
@@ -69,7 +70,7 @@ public class MainPage extends JFrame {
         cuadroPanel.add(saldoActualLabel);
 
         // Etiquetas para mostrar datos
-        JLabel noCuentaValue = new JLabel();
+        noCuentaValue = new JLabel(); // Hacerlo una variable de instancia
         noCuentaValue.setFont(new Font("Tahoma", Font.PLAIN, 20));
         noCuentaValue.setBounds(250, 20, 200, 30);
         cuadroPanel.add(noCuentaValue);
@@ -137,7 +138,12 @@ public class MainPage extends JFrame {
     }
 
     private void abrirTransacciones() {
-        TransaccionesPage transacciones = new TransaccionesPage();
+        // Obtén el número de cuenta de las etiquetas que se llenaron con los datos
+        String noCuenta = noCuentaValue.getText(); // Usa la etiqueta que contiene el número de cuenta
+        int numeroCuenta = Integer.parseInt(noCuenta); // Convierte a entero
+        
+        // Ahora pasa el número de cuenta al constructor de TransaccionesPage
+        TransaccionesPage transacciones = new TransaccionesPage(numeroCuenta);
         transacciones.setVisible(true);  // Mostrar la nueva ventana
         setVisible(false);
     }

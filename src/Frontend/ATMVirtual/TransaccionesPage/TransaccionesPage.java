@@ -1,22 +1,26 @@
 package Frontend.ATMVirtual.TransaccionesPage;
 
 import javax.swing.*;
-
 import Frontend.ATMVirtual.MainPage.MainPage;
+import Main.Java.DataBase.DataBaseconnector;
+import Backend.Class.Security.Security; // Asegúrate de importar la clase Security
+import Backend.Class.Transacciones.Transaccions;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.prefs.Preferences;
 
 public class TransaccionesPage extends JFrame {
     private static JFrame frame;
     JLabel label1, label2, label3, error;
-    JTextField textField;
+    JTextField textField; // Variable de instancia para cuenta destino
+    JTextField textField2; // Variable de instancia para monto
     JButton button2, button1, button3;
     JPasswordField passwordField;
+    private int numeroCuenta; // Agregar variable para almacenar el número de cuenta
 
-    public TransaccionesPage() {
+    public TransaccionesPage(int numeroCuenta) {
         super("Transacciones");
+        this.numeroCuenta = numeroCuenta; // Guardar el número de cuenta
 
         setSize(850, 550); // Tamaño de la ventana
         setLocation(320, 150); // Ubicación de la ventana
@@ -51,7 +55,7 @@ public class TransaccionesPage extends JFrame {
         panel.add(lblNewLabel);
 
         // Agregar cuenta
-        JTextField textField = new JTextField(15);
+        textField = new JTextField(15); // Asignar a la variable de instancia
         textField.setBackground(Color.lightGray);
         textField.setForeground(Color.black);
         textField.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -66,7 +70,7 @@ public class TransaccionesPage extends JFrame {
         panel.add(lblNewLabel2);
 
         // Agregar monto a depositar
-        JTextField textField2 = new JTextField(15);
+        textField2 = new JTextField(15); // Asignar a la variable de instancia
         textField2.setBackground(Color.lightGray);
         textField2.setForeground(Color.black);
         textField2.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -96,10 +100,13 @@ public class TransaccionesPage extends JFrame {
         button1.setFont(new Font("Tahoma", Font.PLAIN, 20));
         button1.setBackground(new Color(48, 44, 44));
         button1.setBounds(250, 250, 200, 40);
+        button1.addActionListener(e -> {
+            realizarTransaccion(); // Llama al método de transacción
+        });
         panel.add(button1); // Añadir al panel
 
         // Botón Atras
-        JButton button2 = new JButton("Atras");
+        button2 = new JButton("Atras");
         button2.setForeground(Color.white);
         button2.setFont(new Font("Tahoma", Font.PLAIN, 20));
         button2.setBackground(new Color(225, 18, 18));
@@ -117,6 +124,21 @@ public class TransaccionesPage extends JFrame {
         setVisible(true);
     }
 
+    private void realizarTransaccion() {
+        // Obtener los datos de la interfaz (como cuenta destino y monto)
+        try {
+            int cuentaDestino = Integer.parseInt(textField.getText().trim()); // Obtener el texto del JTextField
+            double monto = Double.parseDouble(textField2.getText().trim()); // Obtener el texto del JTextField
+
+            // Crear una instancia de Transaccions y realizar la transacción
+            Transaccions transacciones = new Transaccions(DataBaseconnector.getConnection());
+            transacciones.realizarTransaccion(numeroCuenta, cuentaDestino, monto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese valores válidos para cuenta destino y monto.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void regresarCuenta() throws SQLException {
         MainPage cuenta = new MainPage();
@@ -125,7 +147,9 @@ public class TransaccionesPage extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Crear la ventana con el fondo
-        new TransaccionesPage();
+        Security security = new Security();
+        String user = "nombreUsuario"; // Reemplaza con el nombre del usuario actual
+        String accountNumber = security.getAccountNumber(user);
+        new TransaccionesPage(Integer.parseInt(accountNumber)); // Asume que accountNumber es un número entero
     }
 }

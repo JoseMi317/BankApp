@@ -17,7 +17,7 @@ public class LoginPage extends JFrame {
     JPasswordField passwordField1;
     JButton button2, button1, button3;
     private final Preferences prefs;
-
+    public String accountNumber; // Hacer pública la variable
     // El constructor
     public LoginPage() {
         super("Autenticacion");
@@ -146,7 +146,9 @@ public class LoginPage extends JFrame {
         Security security = new Security(); // Crear una instancia de Security
         // Validar las credenciales del usuario
         if (security.validateUser(user, password)) {
+            accountNumber = security.getAccountNumber(user); // Obtener el número de cuenta
             prefs.put("user", user);
+            prefs.put("accountNumber", accountNumber); // Guardar el número de cuenta en preferencias
             frame.setVisible(false);
             final MainPage cuenta = new MainPage();
             cuenta.setVisible(true);

@@ -9,8 +9,7 @@ import Main.Java.DataBase.DataBaseconnector;
 
 public class Security {
     // Método para validar el usuario
-    public static void main(String[] args) {
-    } public boolean validateUser(String user, char[] password) {
+    public boolean validateUser(String user, char[] password) {
         String query = "SELECT contraseña_hash FROM Cuentas WHERE nombre_usuario = ?";
         try (Connection conn = DataBaseconnector.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -41,5 +40,25 @@ public class Security {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Método para obtener el número de cuenta
+    public String getAccountNumber(String user) {
+        String accountNumber = null;
+        String query = "SELECT numero_cuenta FROM Cuentas WHERE nombre_usuario = ?";
+        
+        try (Connection conn = DataBaseconnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                accountNumber = rs.getString("numero_cuenta");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return accountNumber; // Devuelve el número de cuenta
     }
 }
