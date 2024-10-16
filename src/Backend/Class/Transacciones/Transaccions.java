@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class Transaccions {
     private Connection connection;
 
@@ -46,7 +48,7 @@ public class Transaccions {
     
             // Confirmar transacción
             connection.commit();
-            System.out.println("Transacción realizada exitosamente");
+            JOptionPane.showMessageDialog(null, "Transferencia exitosa", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             connection.rollback();
             System.out.println("Error al realizar la transacción: " + e.getMessage());

@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import Main.Java.DataBase.DataBaseconnector;
 
 public class Security {
+    
     // Método para validar el usuario
     public boolean validateUser(String user, char[] password) {
         String query = "SELECT contraseña_hash FROM Cuentas WHERE nombre_usuario = ?";
