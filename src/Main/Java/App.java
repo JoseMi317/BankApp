@@ -1,11 +1,12 @@
 package Main.Java;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import Frontend.ATMVirtual.LoginPage.LoginPage;
 import Main.Java.DataBase.DataBaseconnector;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class App {
+    @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
         try {
             Connection connection = DataBaseconnector.getConnection();

@@ -1,11 +1,11 @@
 package Backend.Class.Security;
 
+import Main.Java.DataBase.DataBaseconnector;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import Main.Java.DataBase.DataBaseconnector;
 
 public class Security {
     
@@ -62,4 +62,24 @@ public class Security {
         
         return accountNumber; // Devuelve el número de cuenta
     }
+
+    public int getAccountId(String user) {
+        int accountId = -1; // Valor por defecto si no se encuentra la cuenta
+        String query = "SELECT id FROM Cuentas WHERE nombre_usuario = ?";
+    
+        try (Connection conn = DataBaseconnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user);
+            ResultSet rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                accountId = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return accountId; // Devuelve el ID de la cuenta
+    }
+    
 }
