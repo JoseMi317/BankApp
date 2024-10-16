@@ -3,6 +3,7 @@ package Frontend.ATMVirtual.MainPage;
 import javax.swing.*;
 
 import Backend.Class.Login.Login;
+import Frontend.ATMVirtual.LoginPage.LoginPage;
 import Frontend.ATMVirtual.PrestamosPage.PrestamosPage;
 import Frontend.ATMVirtual.TransaccionesPage.TransaccionesPage;
 import Main.Java.DataBase.DataBaseconnector;
@@ -85,6 +86,39 @@ public class MainPage extends JFrame {
         saldoActualValue.setBounds(250, 130, 200, 30);
         cuadroPanel.add(saldoActualValue);
 
+        // Botón Ver Historial
+        JButton buttonHistorial = new JButton("Ver Historial");
+        buttonHistorial.setForeground(Color.white);
+        buttonHistorial.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        buttonHistorial.setBackground(new Color(48, 44, 44));
+        buttonHistorial.setBounds(20, 450, 200, 40); // Cambia la posición según sea necesario
+        buttonHistorial.addActionListener(e -> {
+            // Lógica para abrir el historial (aún no implementada)
+            JOptionPane.showMessageDialog(null, "Historial no disponible aún.");
+        });
+        this.add(buttonHistorial); // Añade el botón a la ventana principal
+
+       // Botón Cerrar Sesión
+        JButton buttonCerrarSesion = new JButton("Cerrar Sesión");
+        buttonCerrarSesion.setForeground(Color.white);
+        buttonCerrarSesion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        buttonCerrarSesion.setBackground(new Color(48, 44, 44));
+        buttonCerrarSesion.setBounds(600, 450, 200, 40); // Posición en la esquina inferior derecha
+        buttonCerrarSesion.addActionListener(e -> {
+            // Mostrar confirmación antes de cerrar sesión
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas cerrar sesión?", 
+                    "Confirmar cierre de sesión", JOptionPane.YES_NO_OPTION);
+            
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.setVisible(false); // Oculta la ventana actual
+
+                // Abre la ventana de login
+                LoginPage loginPage = new LoginPage(); // Asegúrate de que LoginPage está definida
+                loginPage.setVisible(true); // Muestra la nueva ventana de inicio de sesión
+            }
+        });
+        this.add(buttonCerrarSesion); // Añade el botón a la ventana principal
+
         // Botón Realizar Transacción
         button1 = new JButton("Transferir");
         button1.setForeground(Color.white);
@@ -119,6 +153,7 @@ public class MainPage extends JFrame {
 
         // Cargar datos de la cuenta
         cargarDatosCuenta(noCuentaValue, tipoCuentaValue, saldoActualValue);
+
     }
 
     private void cargarDatosCuenta(JLabel noCuentaLabel, JLabel tipoCuentaLabel, JLabel saldoActualLabel) {
