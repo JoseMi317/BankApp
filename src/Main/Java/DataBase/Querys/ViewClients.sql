@@ -1,1 +1,1 @@
-SELECT * FROM Transacciones;
+SELECT * FROM Cuentas;
