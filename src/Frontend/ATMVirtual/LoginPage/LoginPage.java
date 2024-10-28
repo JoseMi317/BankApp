@@ -1,28 +1,31 @@
 package Frontend.ATMVirtual.LoginPage;
-import javax.swing.*;
 
 import Backend.Class.Security.Security;
 import Frontend.ATMVirtual.MainPage.MainPage;
-
+import Frontend.RegisterApp.FormPage.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
+import javax.swing.*;
 
 public class LoginPage extends JFrame {
     private static JFrame frame;
-    JLabel label1, label2, label3, error;
+    JLabel error;
     JTextField textField;
     JPasswordField passwordField1;
-    JButton button2, button1, button3;
+    JButton button2, button1;
+    JLabel labelRegistrarse; // Nuevo Label
     private final Preferences prefs;
     public int accountNumber; // Hacer pública la variable
+
     // El constructor
+    @SuppressWarnings({"removal", "BoxedPrimitiveConstruction"})
     public LoginPage() {
         super("Autenticacion");
         prefs = Preferences.userRoot().node("ATM");
-
         setSize(850, 550); // Tamaño de la ventana
         setLocation(320, 150); // ubicación de la ventana
 
@@ -101,7 +104,6 @@ public class LoginPage extends JFrame {
             try {
                 loginBtnClicked(textField.getText(), passwordField1.getPassword());
             } catch (SQLException e1) {
-                e1.printStackTrace();
             }
         });
         add(button1);
@@ -115,18 +117,32 @@ public class LoginPage extends JFrame {
         button2.addActionListener((ActionEvent e) -> cleanBtnClicked());
         add(button2);
 
+        // Nuevo Label de registro
+        labelRegistrarse = new JLabel("Registrate Aqui!", JLabel.CENTER);
+        labelRegistrarse.setForeground(Color.yellow);
+        labelRegistrarse.setFont(new Font("AvantGarde", Font.BOLD, 16));
+        labelRegistrarse.setBounds(300, 450, 250, 30);
+        labelRegistrarse.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        labelRegistrarse.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Código para navegar a FormPage
+                frame.setVisible(false);
+                final FormPage formPage = new FormPage(); // Asegúrate de tener esta clase creada
+                formPage.setVisible(true);
+            }
+        });
+        add(labelRegistrarse);
+
         // layout null para usar bounds
         setLayout(null);
-
         // El fondo quede atrás
         getContentPane().add(iiimage, new Integer(Integer.MIN_VALUE));
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra
         setVisible(true); // Hace visible la ventana
     }
 
-    private void cleanBtnClicked()
-    {
+    private void cleanBtnClicked() {
         error.setVisible(false);
         textField.setText("");
         passwordField1.setText("");
@@ -142,7 +158,6 @@ public class LoginPage extends JFrame {
             error.setVisible(true);
             return;
         }
-    
         Security security = new Security();
         if (security.validateUser(user, password)) {
             int accountId = security.getAccountId(user); // Obtener el ID de la cuenta
@@ -156,6 +171,4 @@ public class LoginPage extends JFrame {
             error.setVisible(true);
         }
     }
-    
 }
-

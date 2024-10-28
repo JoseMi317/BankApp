@@ -1,22 +1,21 @@
 package Frontend.ATMVirtual.TransaccionesPage;
 
-import javax.swing.*;
+import Backend.Class.Security.Security;
+import Backend.Class.Transacciones.Transaccions;
 import Frontend.ATMVirtual.MainPage.MainPage;
 import Main.Java.DataBase.DataBaseconnector;
-import Backend.Class.Security.Security; // Asegúrate de importar la clase Security
-import Backend.Class.Transacciones.Transaccions;
-
 import java.awt.*;
 import java.sql.SQLException;
+import javax.swing.*;
 
 public class TransaccionesPage extends JFrame {
-    private static JFrame frame;
-    JLabel label1, label2, label3, error;
-    JTextField textField; // Variable de instancia para cuenta destino
-    JTextField textField2; // Variable de instancia para monto
-    JButton button2, button1, button3;
-    JPasswordField passwordField;
-    private int numeroCuenta; // Agregar variable para almacenar el número de cuenta
+
+    JLabel label3;
+    JTextField textField;
+    JTextField textField2; 
+    JButton button2;
+    @SuppressWarnings("FieldMayBeFinal")
+    private int numeroCuenta;
 
     public TransaccionesPage(int numeroCuenta) {
         super("Transacciones");
@@ -115,7 +114,6 @@ public class TransaccionesPage extends JFrame {
             try {
                 regresarCuenta();
             } catch (SQLException e1) {
-                e1.printStackTrace();
             }
         });
         panel.add(button2);
@@ -136,7 +134,6 @@ public class TransaccionesPage extends JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese valores válidos para cuenta destino y monto.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -148,8 +145,8 @@ public class TransaccionesPage extends JFrame {
 
     public static void main(String[] args) {
         Security security = new Security();
-        String user = "nombreUsuario"; // Reemplaza con el nombre del usuario actual
+        String user = "nombreUsuario"; 
         String accountNumber = security.getAccountNumber(user);
-        new TransaccionesPage(Integer.parseInt(accountNumber)); // Asume que accountNumber es un número entero
+        new TransaccionesPage(Integer.parseInt(accountNumber));
     }
 }

@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 public class Security {
     
     // Método para validar el usuario
+    @SuppressWarnings("CallToPrintStackTrace")
     public boolean validateUser(String user, char[] password) {
         String query = "SELECT contraseña_hash FROM Cuentas WHERE nombre_usuario = ?";
         try (Connection conn = DataBaseconnector.getConnection(); 
@@ -44,6 +45,7 @@ public class Security {
     }
 
     // Método para obtener el número de cuenta
+    @SuppressWarnings("CallToPrintStackTrace")
     public String getAccountNumber(String user) {
         String accountNumber = null;
         String query = "SELECT numero_cuenta FROM Cuentas WHERE nombre_usuario = ?";
@@ -63,6 +65,7 @@ public class Security {
         return accountNumber; // Devuelve el número de cuenta
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public int getAccountId(String user) {
         int accountId = -1; // Valor por defecto si no se encuentra la cuenta
         String query = "SELECT id FROM Cuentas WHERE nombre_usuario = ?";

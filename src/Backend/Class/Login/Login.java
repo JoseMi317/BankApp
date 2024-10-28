@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Login {
+    @SuppressWarnings("FieldMayBeFinal")
     private Connection connection;
 
     public Login(Connection connection) {
         this.connection = connection;
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public String[] obtenerDatosCuenta(String nombre_usuario) {
         String[] datos = new String[3];
         String query = "SELECT numero_cuenta, tipo_cuenta, saldo FROM Cuentas WHERE nombre_usuario = ?"; // Asegúrate de tener una tabla 'cuentas' con estas columnas

@@ -9,7 +9,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class HistorialPage extends JDialog {
+    @SuppressWarnings("FieldMayBeFinal")
     private Connection connection;
+    @SuppressWarnings("FieldMayBeFinal")
     private int idCuenta;
 
     public HistorialPage(Frame owner, Connection connection, int idCuenta) throws SQLException {

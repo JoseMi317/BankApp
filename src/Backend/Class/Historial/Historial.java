@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Historial {
-    private Connection connection;
+    private final Connection connection;
 
     public Historial(Connection connection) {
         this.connection = connection;

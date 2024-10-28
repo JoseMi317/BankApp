@@ -12,12 +12,12 @@ import java.util.prefs.Preferences;
 import javax.swing.*;
 
 public class MainPage extends JFrame {
+    @SuppressWarnings("FieldMayBeFinal")
     private Connection connection;
-    private static JFrame frame;
-    JLabel label1, label2, label3;
-    JButton button1, button2, button3;
+    JButton button1, button3;
     private final Preferences prefs;
     private JLabel noCuentaValue;
+    @SuppressWarnings("FieldMayBeFinal")
     private int accountId;
 
     public MainPage() throws SQLException {
@@ -91,7 +91,6 @@ public class MainPage extends JFrame {
             try {
                 abrirHistorial();
             } catch (SQLException e1) {
-                e1.printStackTrace();
             }
         });
         cuadroPanel.add(buttonHistorial);
